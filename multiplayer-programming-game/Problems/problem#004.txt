@@ -1,0 +1,11 @@
+Adding numbers
+Add two numbers, x and y.
+30
+print(x+y).
+2|x|y|    20|-1000|1000|-1000|1000|
+import sys
+import math
+x = int(sys.argv[1])
+y = int(sys.argv[2])
+del sys
+print((x+y))

@@ -1,0 +1,16 @@
+line highlighting:1
+keyword highlighting:1
+occurrence highlighting:1
+auto indentation:1
+auto bracket closing:1
+auto string closing:1
+colour mode:2
+button colour:-205
+main text colour:-16777216
+code colour:-65536
+keyword colour:-13369549
+main background colour:-10027009
+secondary background colour:-6711040
+text editor background colour:-10027060
+line highlighting colour:-6684775
+occurrence highlighting colour:-3342388

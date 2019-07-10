@@ -1,0 +1,19 @@
+Even Fibonacci numbers
+By considering the terms in the Fibonacci sequence whose values do not exceed a given positive integer n, find the sum of the even-valued terms.
+300
+The Fibonacci sequence is: f(n) = f(n-1) + f(n-2).
+1|n|1|1|1|1|2|2|1|3|3|2|4|10|5|11|100|5|101|1000|5|1001|10000|
+import sys 
+import math 
+n = int(sys.argv[1]) 
+del sys
+total = 0
+lastnumber = 0
+number = 1
+while (number < n):
+    if (number % 2 == 0):
+        total += number
+    temp = lastnumber
+    lastnumber = number
+    number += temp
+print(total)
