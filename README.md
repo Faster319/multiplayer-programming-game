@@ -4,4 +4,4 @@ In this game, players are tasked to solve a problem (such as those featured on [
 
 This project includes a server and client program. The server program allows the host to manage problems (creating, deleting, scheduling), manage players (kicking, banning), and manage general game settings (time limit, scoring method). The client program allows players to connect to a server to play the game, but it also includes features such as syntax highlighting, auto indentation and custom aesthetic settings.
 
-This is one of my first Java projects so it's not brilliant, but during this project I learned a whole lot more about Java and programming in general.
+This was one of my first Java projects so it's not brilliant, but during this project I learned a whole lot more about Java and programming in general.
