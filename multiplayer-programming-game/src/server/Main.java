@@ -696,6 +696,9 @@ public class Main implements ActionListener, Runnable {
 				setupCode += variableNames[i] + " = int(sys.argv[" + (i+1) + "]) \n";
 			}
 			
+			// Delete the system import for security
+			setupCode += "del sys\n";
+			
 			
 			//The following code may throw an exception which must be caught:
 			try {

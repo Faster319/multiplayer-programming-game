@@ -1,5 +1,7 @@
 package reorder;
 
+import java.util.Vector;
+
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
@@ -26,7 +28,7 @@ public class ReorderableTableModel extends DefaultTableModel {
 			toIndex -= 1;
 		}
 
-		Object row = getDataVector().remove(fromIndex); // Remove the row at fromIndex and store it.
+		Vector row = getDataVector().remove(fromIndex); // Remove the row at fromIndex and store it.
 		getDataVector().add(toIndex, row); // Add the stored row to toIndex.
 	}
 

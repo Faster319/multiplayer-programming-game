@@ -872,7 +872,7 @@ public class GUI extends JFrame implements ActionListener {
 		// Disable the elements that should be disabled when a round isn't occurring:
 		submitButton.setEnabled(false);
 		hintButton.setEnabled(false);
-		//solutionTextPane.setEditable(false);
+		solutionTextPane.setEditable(false);
 		outputTextArea.setEditable(false);
 		descriptionTextArea.setEditable(false);
 		customTestButton.setEnabled(false);

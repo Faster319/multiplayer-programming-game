@@ -4,11 +4,11 @@ occurrence highlighting:1
 auto indentation:1
 auto bracket closing:1
 auto string closing:1
-colour mode:2
+colour mode:0
 button colour:-205
 main text colour:-16777216
-code colour:-65536
-keyword colour:-13369549
+code colour:-16777012
+keyword colour:-65536
 main background colour:-10027009
 secondary background colour:-6711040
 text editor background colour:-10027060
