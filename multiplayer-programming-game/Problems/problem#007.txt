@@ -1,0 +1,10 @@
+test2
+test22
+22
+2222
+1|t|20|3|4|
+import sys 
+import math 
+t = int(sys.argv[1]) 
+del sys
+print(t+t)

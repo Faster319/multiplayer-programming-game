@@ -68,7 +68,7 @@ public class IDEDocumentFilter extends DocumentFilter {
 						textPane.getHighlighter().removeHighlight(highlight);
 					}
 				}
-			
+				
 				// Get the left and right parts of the selected text:
 				int left = event.getMark();
 				int right = event.getDot();
@@ -76,6 +76,12 @@ public class IDEDocumentFilter extends DocumentFilter {
 				// If there is no text selected, return:
 				if (left == right) {
 					return;
+				}
+				
+				if (left > right) {
+					int temp = left;
+					left = right;
+					right = temp;
 				}
 				
 				// Get the document from the text pane:
@@ -332,7 +338,7 @@ public class IDEDocumentFilter extends DocumentFilter {
 	}
 	
 	
-	// Method to show the new colours for the existing text:
+	// Method to update the colours of the existing text when they are changed:
 	private void updateColours() {
 		
 		Document doc = textPane.getDocument(); // Get the JTextPane's document.
@@ -341,15 +347,7 @@ public class IDEDocumentFilter extends DocumentFilter {
 		// The following code may throw an exception which must be caught:
 		try {
 			
-			//int length = doc.getLength(); // Get and store the document's length.
-			//String allText = doc.getText(0, doc.getLength()); // Get and store all of the document's text.
-			
-			StyleConstants.setForeground((MutableAttributeSet) attributeSet, codeColour);
-			
-			//int offset = 0;
-			
-			int left = 0;
-			
+			int left = 0; // Create a left pointer which starts at the beginning of the document.
 			int right = left; // Create a right pointer which starts at the left pointer.
 			
 			// Increase right until it is outside of the document (or until the loop is forcefully broken):
@@ -396,13 +394,11 @@ public class IDEDocumentFilter extends DocumentFilter {
 				// If the word is a keyword, modify the attribute set so that the text is the keyword colour:
 				if (keywords.contains(word)) {
 					StyleConstants.setForeground((MutableAttributeSet) attributeSet, keywordColour);
-					System.out.println(word+" is a keyword.");
 				}
 				
 				// If the word is not a keyword, modify the attribute set so that the text is the code colour:
 				else {
 					StyleConstants.setForeground((MutableAttributeSet) attributeSet, codeColour);
-					System.out.println(word+" is not a keyword.");
 				}
 				
 				// Add the word to the document with the new attribute set:

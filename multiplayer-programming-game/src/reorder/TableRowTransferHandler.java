@@ -1,14 +1,74 @@
 package reorder;
 
+import java.awt.Cursor;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DragSource;
+
+import javax.activation.ActivationDataFlavor;
+import javax.activation.DataHandler;
+
+import javax.swing.JComponent;
+import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 @SuppressWarnings("serial")
 public class TableRowTransferHandler extends TransferHandler {
-	/*
-	 *  		I have removed this class.
-	 *  		The original code was taken from https://stackoverflow.com/a/4769575,
-	 *  	but I am not sure if it is legal to copy it directly.
-	 *  		Therefore, until I have learned to understand the code enough to write
-	 *  	my own class, the drag-and-drop feature will not work.
-	 */
+	private final DataFlavor localObjectFlavor = new ActivationDataFlavor(Integer.class,
+			"application/x-java-Integer;class=java.lang.Integer", "Integer Row Index");
+	private JTable table = null;
+
+	public TableRowTransferHandler(JTable table) {
+		this.table = table;
+	}
+
+	@Override
+	protected Transferable createTransferable(JComponent c) {
+		assert (c == table);
+		return new DataHandler(new Integer(table.getSelectedRow()), localObjectFlavor.getMimeType());
+	}
+
+	@Override
+	public boolean canImport(TransferHandler.TransferSupport info) {
+		boolean b = info.getComponent() == table && info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
+		table.setCursor(b ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+		return b;
+	}
+
+	@Override
+	public int getSourceActions(JComponent c) {
+		return TransferHandler.COPY_OR_MOVE;
+	}
+
+	@Override
+	public boolean importData(TransferHandler.TransferSupport info) {
+		JTable target = (JTable) info.getComponent();
+		JTable.DropLocation dl = (JTable.DropLocation) info.getDropLocation();
+		int index = dl.getRow();
+		int max = table.getModel().getRowCount();
+		if (index < 0 || index > max)
+			index = max;
+		target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		try {
+			Integer rowFrom = (Integer) info.getTransferable().getTransferData(localObjectFlavor);
+			if (rowFrom != -1 && rowFrom != index) {
+				((ReorderableTableModel) table.getModel()).reorder(rowFrom, index);
+				if (index > rowFrom)
+					index--;
+				target.getSelectionModel().addSelectionInterval(index, index);
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	protected void exportDone(JComponent c, Transferable t, int act) {
+		if ((act == TransferHandler.MOVE) || (act == TransferHandler.NONE)) {
+			table.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		}
+	}
+
 }

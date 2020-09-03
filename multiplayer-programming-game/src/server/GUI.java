@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -24,6 +25,7 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 import reorder.ReorderableTableModel;
+import reorder.TableRowTransferHandler;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements ActionListener {
@@ -175,16 +177,15 @@ public class GUI extends JFrame implements ActionListener {
 		editProblemTitleLabel.setText("Title:");
 
 		editProblemTitleTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-		editProblemTitleTextField.setText("Multiples of 3 and 5 ");
+		editProblemTitleTextField.setText("");
 
 		editProblemDescriptionLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-		editProblemDescriptionLabel.setText("Description:");
+		editProblemDescriptionLabel.setText("");
 
 		editProblemDescriptionTextArea.setColumns(20);
 		editProblemDescriptionTextArea.setLineWrap(true);
 		editProblemDescriptionTextArea.setRows(5);
-		editProblemDescriptionTextArea
-				.setText("Find the sum of all the positive multiples of 3 or 5 below a given positive integer 'n'.\n");
+		editProblemDescriptionTextArea.setText("");
 		editProblemDescriptionTextArea.setWrapStyleWord(true);
 		editProblemDescriptionScrollPane.setViewportView(editProblemDescriptionTextArea);
 
@@ -192,10 +193,10 @@ public class GUI extends JFrame implements ActionListener {
 		editProblemHintLabel.setText("Hint:");
 
 		editProblemHintTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-		editProblemHintTextField.setText("if (x%3 == 0): x is a multiple of 3.");
+		editProblemHintTextField.setText("");
 
 		editProblemTimeLimitTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-		editProblemTimeLimitTextField.setText("300");
+		editProblemTimeLimitTextField.setText("");
 
 		editProblemTimeLimitLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 		editProblemTimeLimitLabel.setText("Time limit (seconds):");
@@ -206,8 +207,7 @@ public class GUI extends JFrame implements ActionListener {
 		editProblemSolutionTextArea.setColumns(20);
 		editProblemSolutionTextArea.setLineWrap(true);
 		editProblemSolutionTextArea.setRows(5);
-		editProblemSolutionTextArea.setText(
-				"total = 0\nfor i in range(0,n+1):\n    if (i % 3 == 0 or i % 5 == 0):\n        total = total + i\nprint(total)");
+		editProblemSolutionTextArea.setText("");
 		editProblemSolutionTextArea.setWrapStyleWord(true);
 		editProblemSolutionScrollPane.setViewportView(editProblemSolutionTextArea);
 
@@ -233,7 +233,7 @@ public class GUI extends JFrame implements ActionListener {
 
 		editProblemIDTextField.setEditable(false);
 		editProblemIDTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-		editProblemIDTextField.setText("001");
+		editProblemIDTextField.setText("");
 
 		javax.swing.GroupLayout editProblemDialogLayout = new javax.swing.GroupLayout(editProblemDialog.getContentPane());
         editProblemDialog.getContentPane().setLayout(editProblemDialogLayout);
@@ -863,9 +863,9 @@ public class GUI extends JFrame implements ActionListener {
 		problemTableModel = new ReorderableTableModel(new Object[][] {},
 				new String[] { "ID", "Title", "Description" });
 		problemTable.setModel(problemTableModel);
-		//problemTable.setDragEnabled(true);
-		//problemTable.setDropMode(DropMode.INSERT_ROWS);
-		//problemTable.setTransferHandler(new TableRowTransferHandler(problemTable));
+		problemTable.setDragEnabled(true);
+		problemTable.setDropMode(DropMode.INSERT_ROWS);
+		problemTable.setTransferHandler(new TableRowTransferHandler(problemTable));
 		
 		
 		bannedPlayersTableModel = new DefaultTableModel(new Object[][] {},
