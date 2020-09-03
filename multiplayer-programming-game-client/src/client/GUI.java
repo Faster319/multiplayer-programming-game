@@ -1,4 +1,4 @@
-package client;
+package client; //TODO modularise
 
 import java.awt.Color;
 import java.awt.Desktop;

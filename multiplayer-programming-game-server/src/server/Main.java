@@ -1,4 +1,4 @@
-package server;
+package server; //TODO modularise
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
