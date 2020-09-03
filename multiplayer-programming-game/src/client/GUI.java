@@ -6,9 +6,9 @@ import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -165,11 +165,11 @@ public class GUI extends JFrame implements ActionListener {
 				try { // The following code may throw an exception which must be caught.
 					
 					// Get the rectangle of the current line:
-					Rectangle rectangle = modelToView(getCaretPosition());
+					Rectangle2D rectangle = modelToView2D(getCaretPosition());
 					
 					// Fill the rectangle with a grey colour:
 					g.setColor(lineHighlightingColour);
-					g.fillRect(0, rectangle.y, getWidth(), rectangle.height);
+					g.fillRect(0, (int) rectangle.getY(), getWidth(), (int) rectangle.getHeight());
 				}
 				
 				// If a bad location exception is caught, print the stack trace:

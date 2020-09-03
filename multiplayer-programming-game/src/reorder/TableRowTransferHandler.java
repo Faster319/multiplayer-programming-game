@@ -12,11 +12,17 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
+/**
+ * Slightly modified from http://stackoverflow.com/questions/638807/how-do-i-drag-and-drop-a-row-in-a-jtable
+ */
+
 @SuppressWarnings("serial")
 public class TableRowTransferHandler extends TransferHandler {
+	
 	private final DataFlavor localObjectFlavor = new ActivationDataFlavor(Integer.class,
 			"application/x-java-Integer;class=java.lang.Integer", "Integer Row Index");
-	private JTable table = null;
+	
+	private JTable table;
 
 	public TableRowTransferHandler(JTable table) {
 		this.table = table;
@@ -25,7 +31,7 @@ public class TableRowTransferHandler extends TransferHandler {
 	@Override
 	protected Transferable createTransferable(JComponent c) {
 		assert (c == table);
-		return new DataHandler(new Integer(table.getSelectedRow()), localObjectFlavor.getMimeType());
+		return new DataHandler(Integer.valueOf(table.getSelectedRow()), localObjectFlavor.getMimeType());
 	}
 
 	@Override

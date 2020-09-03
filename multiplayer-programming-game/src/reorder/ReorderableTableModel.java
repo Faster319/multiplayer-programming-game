@@ -19,7 +19,6 @@ public class ReorderableTableModel extends DefaultTableModel {
 	}
 
 	// Method to move a row from one index to another:
-	@SuppressWarnings("unchecked")
 	public void reorder(int fromIndex, int toIndex) {
 
 		// If the row is being moved down the table, take one away from toIndex
@@ -28,7 +27,7 @@ public class ReorderableTableModel extends DefaultTableModel {
 			toIndex -= 1;
 		}
 
-		Vector row = getDataVector().remove(fromIndex); // Remove the row at fromIndex and store it.
+		Vector<?> row = getDataVector().remove(fromIndex); // Remove the row at fromIndex and store it.
 		getDataVector().add(toIndex, row); // Add the stored row to toIndex.
 	}
 
