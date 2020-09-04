@@ -8,11 +8,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-
-import java.nio.file.Files;
-
-import javax.swing.filechooser.FileSystemView;
 
 public class SettingsHandler {
 
@@ -20,17 +15,7 @@ public class SettingsHandler {
 
     private File settingsFile;
 
-    public SettingsHandler() {
-
-        String path = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + File.separator
-                + "multiplayer-programming-game-client" + File.separator;
-
-        settingsFile = new File(path + "settings.txt");
-
-        if (!settingsFile.exists()) {
-            
-            copySettingsFile(path);
-        }
+    public SettingsHandler(File settingsFile) {
 
         try {
             loadSettings(settingsFile);
@@ -38,18 +23,6 @@ public class SettingsHandler {
             e.printStackTrace();
         }
 
-    }
-
-    private void copySettingsFile(String path) {
-        InputStream inputStream = getClass().getResourceAsStream("/settings.txt");
-
-        try {
-            new File(path).mkdirs();
-            Files.copy(inputStream, settingsFile.toPath());
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void loadSettings(File settingsFile) throws IOException {

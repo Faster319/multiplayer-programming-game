@@ -1,22 +1,17 @@
 package client; //TODO modularise
 
+//TODO whole project: improve comments by adding javadocs and removing useless comments
+//TODO make help file
+
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 
@@ -28,16 +23,30 @@ public class Main implements Runnable, ActionListener {
 	private GUI gui; // Needed to be able to interact with the GUI.
 	private CommunicationHandler communicationHandler; // Needed to be able to interact with the CommunicationHandler.
 	private SettingsHandler settingsHandler;
+	private ResourceLoader resourceLoader;
 	
 	// Constructor which is called when this object is created:
 	public Main() {
 		gui = new GUI(); // Initialise the GUI object. This displays a GUI.
 		gui.setActionListener(this); // Pass the current Main object to the GUI object, so that its buttons can make this object their action listener.
 
-		settingsHandler = new SettingsHandler();
-		gui.applySettings(settingsHandler.getSettings()); // Read the settings file and pass the settings to the GUI object.
+		loadResources(); // Load the settings and help file.
+	}
+
+
+	private void loadResources() {
+		resourceLoader = new ResourceLoader();
 		
-		copyHelpFile(); // Copy the help file to outside of the .jar file (if the program is running in a .jar file).
+		if (resourceLoader.isLoaded("settings.txt")) {
+			settingsHandler = new SettingsHandler(resourceLoader.getFile("settings.txt"));
+			gui.applySettings(settingsHandler.getSettings());
+		} else {
+			gui.showMessage("Unable to read settings file.");
+		}
+
+		if (!resourceLoader.isLoaded("help.html")) {
+			gui.showMessage("Unable to read help file.");
+		}
 	}
 	
 	
@@ -397,6 +406,20 @@ public class Main implements Runnable, ActionListener {
 			communicationHandler.sendData("CTI"+testInputs); // Send the test inputs string to the server.
 			communicationHandler.sendData("TSM"+gui.getSolution()); // Get and send the player's solution to the server.
 		}
+
+		// If the action was pressing the help button:
+		else if (command.equals("help")) {
+
+			try {
+				Desktop.getDesktop().browse(resourceLoader.getFile("help.html").toURI()); // Open the HTML help file in a browser.
+			}
+			
+			// If an exception was caught:
+			catch (NullPointerException | IOException e) {
+				gui.showMessage("Error loading help file."); // Show an error message to the user.
+				e.printStackTrace();
+			}
+		}
 		
 		// If the action was pressing the "save" button in the settings dialog:
 		else if (command.equals("savesettings")) {
@@ -409,60 +432,6 @@ public class Main implements Runnable, ActionListener {
 			gui.applySettings(newSettings);
 		}
 			
-	}
-	
-	
-	// Method to copy the help file outside of the .jar file:
-	private void copyHelpFile() {
-		
-		String externalDirectory = ""; // Create a string used to store the directory of the .jar file.
-		
-		// If the program is being executed in a .jar file:
-		if (getClass().getResource("Main.class").toString().contains("jar!")) {
-		
-			// Attempt to store the directory of the .jar file:
-			try {
-				externalDirectory = URLDecoder.decode(ClassLoader.getSystemClassLoader().getResource(".").toURI().toString().replaceFirst("file:/", ""),
-						"UTF-8");
-			}
-			
-			// If an exception is caught, print the stack trace (for debugging purposes), display an error message on the GUI and return:
-			catch (URISyntaxException | UnsupportedEncodingException e) {
-				e.printStackTrace();
-				gui.showMessage("Unable to locate external directory.");
-				return;
-			}
-			
-			// Attempt to create a folder in the same directory as the .jar file with the name "PythonGame" if it doesn't already exist:
-			File file = new File(externalDirectory+"/PythonGame/");
-			if (!file.exists()) {
-				file.mkdirs();
-			}
-			
-			InputStream inputStream = getClass().getResourceAsStream("/help.html"); // Create an input stream for the help file.
-			
-			// Create the directory of the help file using the external directory:
-			String helpDirectory = externalDirectory+"PythonGame/help.html";
-					
-			Path path = Paths.get(helpDirectory); // Create a path object for the help directory.
-			
-			// Attempt to copy the file from within the .jar file to the external directory:
-			if (inputStream != null) {
-				try {
-					Files.copy(inputStream, path);
-				}
-				
-				// If the file already exists, return as the help file has already been copied:
-				catch (FileAlreadyExistsException e) {
-					return;
-				}
-
-				// If the file cannot be copied, print the stacktrace (for debugging purposes) but continue trying to read the problems:
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 	
 	
