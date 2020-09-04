@@ -1,5 +1,8 @@
 package client;
 
+//TODO use json or another cleaner way to store settings
+//TODO move some file handling code to a new class so that it can also used by the help file
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
