@@ -1,7 +1,5 @@
 package client;
 
-//TODO use json or another cleaner way to store settings
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +14,7 @@ public class ResourceLoader {
 
     private Map<String, File> files = new HashMap<String, File>();
 
-    String resourcePath;
+    private String resourcePath;
 
     public ResourceLoader() {
 
@@ -33,7 +31,7 @@ public class ResourceLoader {
         File file = new File(resourcePath + fileName);
 
         if (!file.exists()) {
-            boolean success = copyFile(fileName, file);
+            boolean success = copyFile(file);
             if (!success) return false;
         }
 
@@ -42,11 +40,11 @@ public class ResourceLoader {
         return true;
     }
 
-    private boolean copyFile(String fileName, File file) { //TODO use fewer parameters
-        InputStream inputStream = getClass().getResourceAsStream("/" + fileName);
+    private boolean copyFile(File file) {
+        InputStream inputStream = getClass().getResourceAsStream("/" + file.getName());
 
         try {
-            new File(resourcePath).mkdirs();
+            new File(file.getParent()).mkdirs();
             Files.copy(inputStream, file.toPath());
             inputStream.close();
         }
